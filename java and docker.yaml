@@ -1,0 +1,29 @@
+---
+- hosts: slavenode
+  become: yes
+  become_user: root
+  tasks:
+    - name: Install aptitude (preferred by Ansible)
+      apt:
+        name: aptitude
+        state: present
+
+    - name: Install OpenJDK (Java JRE and JDK)
+      apt:
+        name: openjdk-17-jre-headless
+        state: present
+
+    - name: Install Docker GPG APT key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository to apt sources
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible>
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
